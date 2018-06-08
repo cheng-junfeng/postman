@@ -74,7 +74,7 @@ public class MainActivity extends BaseCompatActivity implements MainContract.Vie
     }
 
     private void initToolbar() {
-        ToolbarUtil.setToolbarLeft(toolbar, "Home", "Postman", null);
+        ToolbarUtil.setToolbarLeft(toolbar, "Home", getString(R.string.app_name), null);
         ToolbarUtil.setToolbarRight(toolbar, R.mipmap.ic_action_scan, new View.OnClickListener() {
             @Override
             public void onClick(View view) {

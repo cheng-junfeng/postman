@@ -1,18 +1,23 @@
 package com.postman.ui.module.main.find.adapter;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
+import com.base.utils.LogUtil;
 import com.custom.widget.MultiEditInputView;
+import com.hint.utils.ToastUtils;
 import com.postman.R;
 
 
 public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapter.FindSingleHolder> {
+    private static final String TAG = "FindSingle2Adapter";
     private Context context;
     private LayoutHelper layoutHelper;
     private int count = 0;
@@ -25,7 +30,12 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
     }
 
     public void setContent(String str) {
-        defaultStr = str;
+        LogUtil.d(TAG, "setContent:"+str);
+        if(TextUtils.isEmpty(str)){
+            defaultStr = "{}";
+        }else{
+            defaultStr = str;
+        }
         notifyDataSetChanged();
     }
 
@@ -42,6 +52,16 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
     @Override
     public void onBindViewHolder(FindSingleHolder holder, int position) {
         holder.mevView.setContentText(defaultStr);
+        holder.mevView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(defaultStr);
+                ToastUtils.showToast(context, "had copied");
+                return true;
+            }
+        });
     }
 
     @Override
@@ -54,6 +74,8 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
         public FindSingleHolder(View itemView) {
             super(itemView);
             mevView = itemView.findViewById(R.id.mev_view);
+            mevView.setFocusable(false);
+            mevView.setFocusableInTouchMode(false);
         }
     }
 }

@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:padding="5dp"
-        app:contentHeight="200dp"
+        app:contentHeight="600dp"
         app:contentText=""
-        app:hintText="{}"
-        app:maxCount="200" />
+        app:hintText="{out}"
+        app:maxCount="10000" />
 </LinearLayout>

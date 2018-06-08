@@ -3,6 +3,7 @@ package com.postman.ui.module.main.data.view;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -46,22 +47,26 @@ public class DataDetailActvity extends BaseActivity {
         }
         dialogInput.setText(input);
         dialogOutput.setText(output);
-        dialogInput.setOnClickListener(new View.OnClickListener() {
+        dialogInput.setMovementMethod(new ScrollingMovementMethod());
+        dialogOutput.setMovementMethod(new ScrollingMovementMethod());
+        dialogInput.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(input);
                 ToastUtils.showToast(getApplicationContext(), "had copied");
+                return true;
             }
         });
-        dialogOutput.setOnClickListener(new View.OnClickListener() {
+        dialogOutput.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(output);
                 ToastUtils.showToast(getApplicationContext(), "had copied");
+                return true;
             }
         });
     }

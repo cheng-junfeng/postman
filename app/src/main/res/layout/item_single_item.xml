@@ -17,6 +17,6 @@
         android:padding="5dp"
         app:contentHeight="100dp"
         app:contentText=""
-        app:hintText="{input}"
-        app:maxCount="200" />
+        app:hintText="{in}"
+        app:maxCount="10000" />
 </RelativeLayout>
