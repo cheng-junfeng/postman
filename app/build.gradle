@@ -85,6 +85,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.1'
     //cardview
     implementation "com.android.support:cardview-v7:26.1.0"
+    //nohttp
+    compile 'com.yanzhenjie.nohttp:okhttp:1.1.4'
 
     //base
     implementation project(':baselib')

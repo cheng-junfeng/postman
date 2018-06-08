@@ -9,7 +9,6 @@ import android.widget.RadioButton;
 import com.blankj.utilcode.util.ToastUtils;
 import com.postman.R;
 import com.postman.app.activity.BaseCompatActivity;
-import com.postman.config.NetConfig;
 import com.postman.ui.module.main.data.DataFragment;
 import com.postman.ui.module.main.find.FindFragment;
 import com.postman.ui.module.main.main.adapter.ViewPagerAdapter;
@@ -17,7 +16,6 @@ import com.postman.ui.module.main.main.contract.MainContract;
 import com.postman.ui.module.main.main.presenter.MainPresenter;
 import com.postman.ui.module.other.scan.ScanActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-import com.base.utils.LogUtil;
 import com.base.utils.ToolbarUtil;
 
 
@@ -61,7 +59,6 @@ public class MainActivity extends BaseCompatActivity implements MainContract.Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.d(TAG, "NetConfig:"+ NetConfig.IP_ADDRESS);
         normalColor = getResources().getColor(R.color.tab_host_text_normal);
         selectColor = getResources().getColor(R.color.tab_host_text_select);
 

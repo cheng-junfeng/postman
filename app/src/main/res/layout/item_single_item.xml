@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:padding="5dp"
-        app:contentHeight="200dp"
+        app:contentHeight="100dp"
         app:contentText=""
-        app:hintText="{output}"
+        app:hintText="{input}"
         app:maxCount="200" />
 </RelativeLayout>

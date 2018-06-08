@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.Utils;
 import com.base.utils.LogUtil;
 import com.postman.db.control.AppDbManager;
 import com.postman.ui.module.main.data.control.DemoManager;
+import com.yanzhenjie.nohttp.NoHttp;
 
 import java.util.List;
 
@@ -42,6 +43,8 @@ public class PostmanApplication extends MultiDexApplication {
 
         //db
         AppDbManager.init(mContext);
+        //nohttp
+        NoHttp.initialize(this);
 
         //demo
         DemoManager.init(mContext);

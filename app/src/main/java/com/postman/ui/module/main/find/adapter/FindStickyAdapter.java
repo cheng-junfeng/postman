@@ -2,6 +2,7 @@ package com.postman.ui.module.main.find.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +14,25 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
+import com.base.utils.IPUtil;
 import com.hint.utils.ToastUtils;
 import com.postman.R;
+import com.postman.app.listener.OnRequestListener;
+import com.postman.config.Types;
 
 
 public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter.FindStickyHolder> {
     private Context context;
     private LayoutHelper layoutHelper;
-    private int count = 0;
+    private OnRequestListener onRequestListener;
+    private int count = 1;
 
     private int typeIndex = 0;
-    private String[] allTypes = {"GET", "POST", "PUT", "PATCH", "DELETE", "COPY", "HEAD"};
 
-    public FindStickyAdapter(Context context, LayoutHelper layoutHelper, int count) {
+    public FindStickyAdapter(Context context, LayoutHelper layoutHelper, OnRequestListener listener) {
         this.context = context;
         this.layoutHelper = layoutHelper;
-        this.count = count;
+        this.onRequestListener = listener;
     }
 
     @Override
@@ -47,13 +51,13 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
             @Override
             public void onClick(View view) {
                 new MaterialDialog.Builder(context)
-                        .items(allTypes)
+                        .items(Types.getAll())
                         .widgetColorRes(R.color.color_green)
                         .itemsCallbackSingleChoice(typeIndex, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                 typeIndex=which;
-                                holder.tvType.setText(allTypes[typeIndex]);
+                                holder.tvType.setText(Types.value(typeIndex).name());
                                 return true;
                             }
                         }).show();
@@ -68,7 +72,19 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
         holder.tvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showToast(context, "Start request");
+
+                String url = holder.search_bar.getText().toString();
+                if(TextUtils.isEmpty(url)){
+                    ToastUtils.showToast(context, "need request url");
+                    return;
+                }
+
+                url = url.trim();
+                if(!IPUtil.isValidAddress(url)){
+                    ToastUtils.showToast(context, "invalid address");
+                }else{
+                    onRequestListener.onStart(url, Types.value(typeIndex));
+                }
             }
         });
     }
@@ -85,7 +101,7 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
         ImageView ic_empty;
         ImageView tvSearch;
 
-        private String[] allStrs = {"http://", "https://", "http://172.", "https://www"};
+        private String[] allStrs = {"http://", "https://", "https://www", "http://172.16.93.111:8080"};
 
         public FindStickyHolder(Context context, View itemView) {
             super(itemView);
