@@ -25,7 +25,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_left"
-                android:background="@drawable/type_blue"
+                android:background="@drawable/type_green"
                 android:textColor="@color/color_white"
                 android:paddingLeft="@dimen/offset_3dp"
                 android:paddingRight="@dimen/offset_3dp"

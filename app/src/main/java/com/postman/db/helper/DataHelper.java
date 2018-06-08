@@ -60,7 +60,8 @@ public class DataHelper extends BaseDao<DataEntity> {
 
     public List<DataEntity> queryList() {
         DataEntityDao messDao = daoSession.getDataEntityDao();
-        return messDao.queryBuilder().list();
+        return messDao.queryBuilder()
+                .orderDesc(DataEntityDao.Properties.Data_lasttime).list();
     }
 
     public List<DataEntity> queryListByUserId(String userId) {

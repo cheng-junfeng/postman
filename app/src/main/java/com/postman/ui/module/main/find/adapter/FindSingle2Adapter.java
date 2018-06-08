@@ -21,7 +21,7 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
     private Context context;
     private LayoutHelper layoutHelper;
     private int count = 0;
-    private String defaultStr = "{output}";
+    private String defaultStr = "{out}";
 
     public FindSingle2Adapter(Context context, LayoutHelper layoutHelper, int count) {
         this.context = context;
