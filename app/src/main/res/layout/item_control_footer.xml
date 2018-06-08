@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View style="@style/DeepUnderLine"/>
+    <RadioGroup
+        android:id="@+id/radio_host"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="match_parent">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            android:paddingTop="@dimen/offset_10dp"
+            android:paddingBottom="@dimen/offset_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_20"
+            android:checked="true"
+            android:textColor="@color/color_white"
+            android:text="Home"
+            android:layout_weight="1"/>
+
+        <RadioButton
+            android:id="@+id/rb_my"
+            android:paddingTop="@dimen/offset_10dp"
+            android:paddingBottom="@dimen/offset_10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_radio_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_20"
+            android:checked="false"
+            android:text="History"
+            android:textColor="@color/tab_host_text_normal"
+            android:layout_weight="1"/>
+    </RadioGroup>
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#7C7288</color>
+    <color name="colorPrimaryDark">#7C7288</color>
+    <color name="colorAccent">#F99D78</color>
+
+    <color name="color_white">#FFFFFF</color>
+
+    <color name="tab_host_text_normal">#F99D78</color>
+    <color name="tab_host_text_select">#FFFFFF</color>
+
+    <!--item的水波纹颜色，灰色1-->
+    <color name="itemBackground">#DD7D7D7D</color>
+    <color name="colorPageBg">#f2f4f5</color>
+    <color name="colorWhiteBg">#d9d9d9</color>
+
+    <color name="gray_dark">#646464</color>
+    <color name="gray_black">#202020</color>
+
+    <color name="edit_image_border">#a0a0a0</color>
+</resources>
