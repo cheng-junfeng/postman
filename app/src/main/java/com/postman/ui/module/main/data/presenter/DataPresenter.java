@@ -2,9 +2,8 @@ package com.postman.ui.module.main.data.presenter;
 
 import com.postman.db.entity.DataEntity;
 import com.postman.db.helper.DataHelper;
-import com.postman.ui.module.main.data.bean.DataListBean;
+import com.postman.ui.module.main.data.view.bean.DataListBean;
 import com.postman.ui.module.main.data.contract.DataContract;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatDialogFragment;
 
 import java.util.LinkedList;
@@ -44,7 +43,10 @@ public class DataPresenter implements DataContract.Presenter {
             DataEntity oneMess = allMess.get(i);
 
             DataListBean temp = new DataListBean.Builder(oneMess.getData_id())
-                    .content(oneMess.getData_name()).build();
+                    .content(oneMess.getData_name())
+                    .time(oneMess.getData_lasttime())
+                    .input(oneMess.getData_url())
+                    .output(oneMess.getData_path()).build();
             allData.add(temp);
         }
         mView.setRecyclerData(allData);
@@ -56,5 +58,16 @@ public class DataPresenter implements DataContract.Presenter {
             DataEntity entity = helper.queryListByVideoId(bean.getId());
             helper.delete(entity);
         }
+    }
+
+    @Override
+    public void deleteBeans(DataListBean bean) {
+        DataEntity entity = helper.queryListByVideoId(bean.getId());
+        helper.delete(entity);
+    }
+
+    @Override
+    public void clear() {
+        helper.clear();
     }
 }

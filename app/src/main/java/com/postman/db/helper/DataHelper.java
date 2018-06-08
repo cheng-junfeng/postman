@@ -41,6 +41,13 @@ public class DataHelper extends BaseDao<DataEntity> {
         super.deleteObject(message);
     }
 
+    public void clear() {
+        List<DataEntity> allEntitys = queryList();
+        for(DataEntity entity : allEntitys){
+            delete(entity);
+        }
+    }
+
     public boolean update(DataEntity user) {
         try {
             daoSession.update(user);

@@ -2,7 +2,7 @@ package com.postman.config;
 
 
 public interface Extra {
-    String FRAGMENT_POS = "fragment.pos";
 
-    String NOTE_ID = "note.id";
+    String DATA_INPUT = "data.input";
+    String DATA_OUTPUT = "data.output";
 }

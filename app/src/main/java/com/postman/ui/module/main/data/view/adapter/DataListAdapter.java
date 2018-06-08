@@ -1,17 +1,17 @@
-package com.postman.ui.module.main.data.adapter;
+package com.postman.ui.module.main.data.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.base.app.adapter.BaseRecyAdapter;
 import com.base.app.listener.OnClickLongListener;
 import com.postman.R;
-import com.postman.ui.module.main.data.bean.DataListBean;
+import com.postman.ui.module.main.data.view.bean.DataListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,30 +23,12 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
 
     OnClickLongListener mOnClickListener;
     List<DataListBean> data;
-    List<DataListBean> removeData;
-    boolean isEditable = false;
 
     Context mContext;
 
     public DataListAdapter(Context context, List<DataListBean> data) {
         this.mContext = context;
         this.data = data;
-    }
-
-    public List<DataListBean> getRemoveData() {
-        return removeData;
-    }
-
-    public void setEditable(boolean isEdit) {
-        if (isEdit) {
-            removeData = new ArrayList<>();
-        } else {
-            if (removeData != null) {
-                removeData.clear();
-            }
-        }
-        isEditable = isEdit;
-        notifyDataSetChanged();
     }
 
     public void setDatas(List<DataListBean> datas) {
@@ -64,6 +46,9 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
     public void myBindViewHolder(final ViewHolder holder, final int position) {
         DataListBean userModel = data.get(position);
         holder.hmContent.setText(userModel.getContent());
+        holder.hmTime.setText(userModel.getTime());
+        holder.txInput.setText(userModel.getInput());
+        holder.txOutput.setText(userModel.getOutput());
 
         holder.hmRoot.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -75,9 +60,7 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
         holder.hmRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mOnClickListener.onItemClick(position);
-
             }
         });
     }
@@ -99,8 +82,24 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
         return data.get(pos);
     }
 
-    public void removeData(int adapterPosition) {
-        data.remove(adapterPosition);
+    public List<DataListBean> getItem(String content) {
+        List<DataListBean> allDatas = new ArrayList<>();
+        for(DataListBean theBean : data){
+            if(theBean.getContent().equals(content)){
+                allDatas.add(theBean);
+            }
+        }
+        return allDatas;
+    }
+
+    public void remove(DataListBean bean) {
+        data.remove(bean);
+    }
+
+    public void remove(List<DataListBean> beans) {
+        for(DataListBean bean: beans){
+            remove(bean);
+        }
     }
 
     public void clear() {
@@ -117,7 +116,11 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
         @BindView(R.id.hm_time)
         TextView hmTime;
         @BindView(R.id.hm_root)
-        RelativeLayout hmRoot;
+        LinearLayout hmRoot;
+        @BindView(R.id.tx_input)
+        TextView txInput;
+        @BindView(R.id.tx_output)
+        TextView txOutput;
 
         ViewHolder(View view) {
             super(view);

@@ -13,13 +13,16 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
 import com.base.app.event.RxBusHelper;
+import com.base.utils.TimeUtil;
 import com.hint.utils.ToastUtils;
 import com.postman.R;
 import com.postman.app.activity.BaseCompatFragment;
-import com.postman.app.event.NoteEvent;
-import com.postman.app.event.NoteType;
+import com.postman.app.event.MyEvent;
+import com.postman.app.event.MyType;
 import com.postman.app.listener.OnRequestListener;
 import com.postman.config.Types;
+import com.postman.db.entity.DataEntity;
+import com.postman.db.helper.DataHelper;
 import com.postman.net.CallServer;
 import com.postman.net.HttpListener;
 import com.postman.ui.module.main.find.adapter.FindSingle2Adapter;
@@ -61,10 +64,10 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View containerView = super.onCreateView(inflater, container, savedInstanceState);
         mContext = this.getContext();
-        RxBusHelper.doOnMainThread(this, NoteEvent.class, new RxBusHelper.OnEventListener<NoteEvent>() {
+        RxBusHelper.doOnMainThread(this, MyEvent.class, new RxBusHelper.OnEventListener<MyEvent>() {
             @Override
-            public void onEvent(NoteEvent noteEvent) {
-                if((noteEvent.getType() == NoteType.NEW) || (noteEvent.getType() == NoteType.DELETE)){
+            public void onEvent(MyEvent noteEvent) {
+                if((noteEvent.getType() == MyType.NOTE_NEW)){
                     reloadNote();
                 }
             }
@@ -111,7 +114,7 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
         initView();
     }
 
-    private void getRequest(String url){
+    private void getRequest(final String url){
         Request<String> stringRequest = NoHttp.createStringRequest(url, RequestMethod.GET);
             CallServer.getInstance().request(this.getActivity(), 1, stringRequest, new HttpListener<String>() {
                 @Override
@@ -119,15 +122,31 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                     String responseString = response.get();
                     if (!TextUtils.isEmpty(responseString)) {
                         singleAdapter2.setContent(responseString);
+                        insertData(Types.GET, url, responseString);
                     }else {
                         ToastUtils.showToast(mContext, "success: no data");
+                        insertData(Types.GET, url, "success:no data");
                     }
                 }
 
                 @Override
                 public void onFailed(int what, Response<String> response) {
-
+                    insertData(Types.GET, url, "faild:"+response.getException());
                 }
             },true,true);
+    }
+
+    private void insertData(Types types, String input, String output){
+        DataHelper helper = DataHelper.getInstance();
+        DataEntity entity = new DataEntity();
+        long current = System.currentTimeMillis();
+        entity.setData_id(current);
+        entity.setData_lasttime(TimeUtil.milliseconds2String(current));
+        entity.setData_name(types.name());
+        entity.setData_url(input);
+        entity.setData_path(output);
+
+        helper.insert(entity);
+        RxBusHelper.post(new MyEvent.Builder(MyType.DATE_UPDATE).build());
     }
 }

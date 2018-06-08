@@ -9,30 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="@dimen/fail_icon_height"
-            android:layout_height="@dimen/fail_icon_height"
-            android:layout_gravity="center"
-            android:src="@mipmap/base_icon_loading_fail" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/offset_10dp"
             android:layout_gravity="center"
-            android:text="Faild to load"
-            android:textColor="@color/color_alpha_light_black"
-            android:textSize="@dimen/text_size"/>
-
-        <TextView
-            android:id="@+id/ly_retry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/offset_10dp"
-            android:layout_gravity="center"
-            android:background="@drawable/all_item_retry_selector"
-            android:text="refresh again"
+            android:text="no data"
             android:textColor="@color/color_alpha_light_black"
             android:textSize="@dimen/text_size"/>
     </LinearLayout>
