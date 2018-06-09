@@ -89,6 +89,8 @@ public class DataFragment extends BaseCompatFragment implements DataContract.Vie
                 public void onItemClick(int position) {
                     DataListBean theBean = mAdapter.getItem(position);
                     Bundle bundle = new Bundle();
+                    bundle.putString(Extra.DATA_TYPE, theBean.getContent());
+                    bundle.putString(Extra.DATA_URL, theBean.getUrl());
                     bundle.putString(Extra.DATA_INPUT, theBean.getInput());
                     bundle.putString(Extra.DATA_OUTPUT, theBean.getOutput());
                     readGo(DataDetailActvity.class, bundle);

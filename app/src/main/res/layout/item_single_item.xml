@@ -1,22 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="200dp"
     android:background="@drawable/all_item_gray_selector"
+    android:orientation="vertical"
     android:clickable="true"
     android:layout_margin="@dimen/offset_3dp">
 
-    <com.custom.widget.MultiEditInputView
-        android:layout_below="@id/hm_root"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/mev_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/base_button_height"
+        android:layout_marginTop="@dimen/offset_5dp"
+        android:background="@drawable/all_item_gray_selector"
+        android:clickable="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/offset_10dp"
+            android:layout_marginRight="@dimen/offset_10dp"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/radio_host"
+                android:layout_alignParentBottom="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:layout_height="match_parent">
+
+                <RadioButton
+                    android:id="@+id/rb_head"
+                    android:padding="@dimen/offset_7dp"
+                    android:layout_marginLeft="@dimen/offset_5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_radio_selector"
+                    android:button="@null"
+                    android:textSize="@dimen/text_size_10"
+                    android:checked="true"
+                    android:textColor="@color/color_white"
+                    android:text="Header" />
+
+                <RadioButton
+                    android:id="@+id/rb_body"
+                    android:padding="@dimen/offset_7dp"
+                    android:layout_marginLeft="@dimen/offset_5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_radio_selector"
+                    android:button="@null"
+                    android:textSize="@dimen/text_size_10"
+                    android:checked="false"
+                    android:text="Body"
+                    android:textColor="@color/color_green" />
+            </RadioGroup>
+
+            <ImageView
+                android:id="@+id/rb_add"
+                android:layout_width="@dimen/offset_30dp"
+                android:layout_height="@dimen/offset_30dp"
+                android:padding="@dimen/offset_3dp"
+                android:src="@mipmap/ic_plus"
+                android:background="@drawable/type_black"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <View style="@style/DeepUnderLine" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="15dp"
-        android:padding="5dp"
-        app:contentHeight="100dp"
-        app:contentText=""
-        app:hintText="{in}"
-        app:maxCount="10000" />
-</RelativeLayout>
+        android:background="@color/color_gray">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+</LinearLayout>

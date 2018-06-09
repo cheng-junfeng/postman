@@ -18,14 +18,20 @@ import butterknife.OnClick;
 
 public class DataDetailActvity extends BaseActivity {
 
-
+    @BindView(R.id.hm_content)
+    TextView hmContent;
+    @BindView(R.id.hm_url)
+    TextView hmUrl;
     @BindView(R.id.dialog_input)
     TextView dialogInput;
     @BindView(R.id.dialog_output)
     TextView dialogOutput;
 
+    String type = "GET";
+    String url = "{}";
     String input = "{}";
     String output = "{}";
+
 
     @Override
     protected boolean setToolbar() {
@@ -41,10 +47,24 @@ public class DataDetailActvity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
+        if (bundle != null) {
+            type = bundle.getString(Extra.DATA_TYPE, "GET");
+            url = bundle.getString(Extra.DATA_URL, "{}");
             input = bundle.getString(Extra.DATA_INPUT, "{}");
             output = bundle.getString(Extra.DATA_OUTPUT, "{}");
         }
+        hmContent.setText(type);
+        hmUrl.setText(url);
+        hmUrl.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(url);
+                ToastUtils.showToast(getApplicationContext(), "had copied:url");
+                return true;
+            }
+        });
         dialogInput.setText(input);
         dialogOutput.setText(output);
         dialogInput.setMovementMethod(new ScrollingMovementMethod());
@@ -55,7 +75,7 @@ public class DataDetailActvity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(input);
-                ToastUtils.showToast(getApplicationContext(), "had copied");
+                ToastUtils.showToast(getApplicationContext(), "had copied:input");
                 return true;
             }
         });
@@ -65,7 +85,7 @@ public class DataDetailActvity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(output);
-                ToastUtils.showToast(getApplicationContext(), "had copied");
+                ToastUtils.showToast(getApplicationContext(), "had copied:output");
                 return true;
             }
         });

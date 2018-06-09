@@ -18,14 +18,15 @@ import com.base.utils.IPUtil;
 import com.hint.utils.ToastUtils;
 import com.postman.R;
 import com.postman.app.listener.OnRequestListener;
-import com.postman.config.Types;
+import com.postman.config.Cache;
+import com.postman.config.enums.TypesConfig;
+import com.postman.db.cache.PostmanCache;
 
 
 public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter.FindStickyHolder> {
     private Context context;
     private LayoutHelper layoutHelper;
     private OnRequestListener onRequestListener;
-    private int count = 1;
 
     private int typeIndex = 0;
 
@@ -51,13 +52,15 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
             @Override
             public void onClick(View view) {
                 new MaterialDialog.Builder(context)
-                        .items(Types.getAll())
+                        .items(TypesConfig.getAll())
                         .widgetColorRes(R.color.color_green)
                         .itemsCallbackSingleChoice(typeIndex, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                 typeIndex=which;
-                                holder.tvType.setText(Types.value(typeIndex).name());
+                                holder.tvType.setText(TypesConfig.value(typeIndex).name());
+                                PostmanCache cache = PostmanCache.get(context);
+                                cache.put(Cache.CACHE_TYPE, TypesConfig.value(typeIndex).name());
                                 return true;
                             }
                         }).show();
@@ -83,7 +86,7 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
                 if(!IPUtil.isValidAddress(url)){
                     ToastUtils.showToast(context, "invalid address");
                 }else{
-                    onRequestListener.onStart(url, Types.value(typeIndex));
+                    onRequestListener.onStart(url, TypesConfig.value(typeIndex));
                 }
             }
         });
@@ -91,7 +94,7 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
 
     @Override
     public int getItemCount() {
-        return count;
+        return 1;
     }
 
     public static class FindStickyHolder extends RecyclerView.ViewHolder {

@@ -22,19 +22,25 @@ public class DataEntity {
     @Property(nameInDb = "data_id")
     public long data_id;
     /**
+     * 名称
+     */
+    @Property(nameInDb = "data_name")
+    public String data_name;
+    /**
      * URL
      */
     @Property(nameInDb = "data_url")
     public String data_url;
     /**
-     * 名称
+     * 输入
      */
-    public String data_name;
+    @Property(nameInDb = "data_input")
+    public String data_input;
     /**
-     * 截图地址
+     * 输出
      */
-    @Property(nameInDb = "data_path")
-    public String data_path;
+    @Property(nameInDb = "data_output")
+    public String data_output;
     /**
      * 最后浏览时间
      */
@@ -63,6 +69,15 @@ public class DataEntity {
         this.data_id = data_id;
     }
 
+    public String getData_name() {
+        return data_name;
+    }
+
+    public void setData_name(String data_name) {
+        this.data_name = data_name;
+    }
+
+
     public String getData_url() {
         return this.data_url;
     }
@@ -71,20 +86,20 @@ public class DataEntity {
         this.data_url = data_url;
     }
 
-    public String getData_name() {
-        return this.data_name;
+    public String getData_input() {
+        return data_input;
     }
 
-    public void setData_name(String data_name) {
-        this.data_name = data_name;
+    public void setData_input(String data_input) {
+        this.data_input = data_input;
     }
 
-    public String getData_path() {
-        return this.data_path;
+    public String getData_output() {
+        return data_output;
     }
 
-    public void setData_path(String data_path) {
-        this.data_path = data_path;
+    public void setData_output(String data_output) {
+        this.data_output = data_output;
     }
 
     public String getData_lasttime() {

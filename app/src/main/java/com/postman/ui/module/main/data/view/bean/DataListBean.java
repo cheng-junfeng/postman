@@ -5,6 +5,7 @@ import android.text.TextUtils;
 public class DataListBean {
     private final long id;
     private final String content;
+    private String url;
     private String input;
     private String output;
     private String time;
@@ -12,6 +13,7 @@ public class DataListBean {
     private DataListBean(Builder builder) {
         this.id = builder.id;
         this.content = builder.content;
+        this.url = builder.url;
 
         this.input = builder.input;
         this.output = builder.output;
@@ -24,6 +26,10 @@ public class DataListBean {
 
     public String getContent() {
         return NoNull(this.content);
+    }
+
+    public String getUrl() {
+        return NoNull(this.url);
     }
 
     public String getInput() {
@@ -48,17 +54,19 @@ public class DataListBean {
 
     public static class Builder {
         private final long id;
-        private String content;
+        private final String content;
+        private String url;
         private String input;
         private String output;
         private String time;
 
-        public Builder(long mId) {
+        public Builder(long mId, String cont) {
             this.id = mId;
+            this.content = cont;
         }
 
-        public Builder content(String cont) {
-            this.content = cont;
+        public Builder url(String cont) {
+            this.url = cont;
             return this;
         }
 

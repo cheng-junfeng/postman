@@ -52,6 +52,9 @@
         <activity android:name=".ui.module.main.data.view.DataDetailActvity"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog"/>
+        <activity android:name=".ui.module.main.find.view.InputAddActvity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog"/>
     </application>
 
 </manifest>

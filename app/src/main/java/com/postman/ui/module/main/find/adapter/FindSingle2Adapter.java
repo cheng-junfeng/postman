@@ -20,13 +20,11 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
     private static final String TAG = "FindSingle2Adapter";
     private Context context;
     private LayoutHelper layoutHelper;
-    private int count = 0;
     private String defaultStr = "{out}";
 
-    public FindSingle2Adapter(Context context, LayoutHelper layoutHelper, int count) {
+    public FindSingle2Adapter(Context context, LayoutHelper layoutHelper) {
         this.context = context;
         this.layoutHelper = layoutHelper;
-        this.count = count;
     }
 
     public void setContent(String str) {
@@ -66,7 +64,7 @@ public class FindSingle2Adapter extends DelegateAdapter.Adapter<FindSingle2Adapt
 
     @Override
     public int getItemCount() {
-        return count;
+        return 1;
     }
 
     public class FindSingleHolder extends RecyclerView.ViewHolder {

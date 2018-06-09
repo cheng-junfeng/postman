@@ -1,6 +1,6 @@
-package com.postman.config;
+package com.postman.config.enums;
 
-public enum Types {
+public enum TypesConfig {
     GET,
     POST,
     PUT,
@@ -14,7 +14,7 @@ public enum Types {
         return allStr;
     }
 
-    public static int getIndex(Types value){
+    public static int getIndex(TypesConfig value){
         int index = 0;
         switch (value){
             case GET:index = 0;break;
@@ -29,8 +29,8 @@ public enum Types {
         return index;
     }
 
-    public static Types value(int index){
-        Types value = GET;
+    public static TypesConfig value(int index){
+        TypesConfig value = GET;
         switch (index){
             case 0:value = GET;break;
             case 1:value = POST;break;

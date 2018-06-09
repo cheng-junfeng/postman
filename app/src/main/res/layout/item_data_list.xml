@@ -49,6 +49,32 @@
             </LinearLayout>
 
         </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/data_item_height_small"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_left"
+            android:layout_marginRight="@dimen/margin_left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Url" />
+
+            <TextView
+                android:id="@+id/tx_url"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="{}" />
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="0.6dp"
@@ -74,12 +100,12 @@
             <TextView
                 android:id="@+id/tx_input"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="{int}" />
+                android:text="{}" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,12 +126,12 @@
             <TextView
                 android:id="@+id/tx_output"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="5"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="{output}" />
+                android:text="{}" />
         </LinearLayout>
     </LinearLayout>
 

@@ -47,6 +47,7 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
         DataListBean userModel = data.get(position);
         holder.hmContent.setText(userModel.getContent());
         holder.hmTime.setText(userModel.getTime());
+        holder.tx_url.setText(userModel.getUrl());
         holder.txInput.setText(userModel.getInput());
         holder.txOutput.setText(userModel.getOutput());
 
@@ -115,6 +116,8 @@ public class DataListAdapter extends BaseRecyAdapter<DataListAdapter.ViewHolder>
         TextView hmContent;
         @BindView(R.id.hm_time)
         TextView hmTime;
+        @BindView(R.id.tx_url)
+        TextView tx_url;
         @BindView(R.id.hm_root)
         LinearLayout hmRoot;
         @BindView(R.id.tx_input)

@@ -10,6 +10,7 @@
     <com.custom.widget.MultiEditInputView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mev_view"
+        android:background="@color/color_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"

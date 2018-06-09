@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true"
+        android:background="@color/color_light_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/data_item_height"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/offset_3dp"
+            android:paddingBottom="@dimen/offset_3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hm_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:background="@drawable/type_green"
+                android:textColor="@color/color_white"
+                android:paddingLeft="@dimen/offset_3dp"
+                android:paddingRight="@dimen/offset_3dp"
+                android:gravity="start"
+                android:text="POST" />
+
+            <TextView
+                android:id="@+id/hm_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_left"
+                android:background="@drawable/type_green"
+                android:textColor="@color/color_white"
+                android:paddingLeft="@dimen/offset_3dp"
+                android:paddingRight="@dimen/offset_3dp"
+                android:gravity="start"
+                android:text="HEADER" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.6dp"
+            android:background="@color/colorAccent"
+            android:layout_marginStart="@dimen/offset_10dp"
+            android:layout_marginEnd="@dimen/offset_10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/data_item_height"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/offset_5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Key"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "14"
+                android:scrollbars = "vertical"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=":"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "14"
+                android:scrollbars = "vertical"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black"
+                android:textSize="5pt"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Value"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "14"
+                android:scrollbars = "vertical"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/data_item_height"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/offset_5dp"
+            android:layout_marginRight="@dimen/offset_5dp"
+            android:padding="@dimen/offset_5dp"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/hm_key"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:background="@color/color_gray"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "14"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=":"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "14"
+                android:scrollbars = "vertical"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black"
+                android:textSize="5pt"/>
+            <EditText
+                android:id="@+id/hm_value"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:background="@color/color_gray"
+                android:padding="@dimen/offset_3dp"
+                android:maxLines = "50"
+                android:ellipsize="end"
+                android:textColor="@color/color_light_black" />
+        </LinearLayout>
+        <View style="@style/DeepUnderLine" />
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/base_default"
+                android:padding="@dimen/offset_7dp"
+                android:textSize="@dimen/text_size_large"
+                android:background="@color/color_light_white"
+                android:text="取消" />
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/color_light_white"
+                android:textSize="@dimen/text_size_large"
+                android:padding="@dimen/offset_7dp"
+                android:background="@color/base_default"
+                android:text="确定" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -20,7 +20,7 @@ import com.postman.app.activity.BaseCompatFragment;
 import com.postman.app.event.MyEvent;
 import com.postman.app.event.MyType;
 import com.postman.app.listener.OnRequestListener;
-import com.postman.config.Types;
+import com.postman.config.enums.TypesConfig;
 import com.postman.db.entity.DataEntity;
 import com.postman.db.helper.DataHelper;
 import com.postman.net.CallServer;
@@ -50,6 +50,8 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
     private List<DelegateAdapter.Adapter> mAdapters;
 
     DelegateAdapter delegateAdapter;
+
+    FindStickyAdapter stickyAdapter;
     FindSingleAdapter singleAdapter1;
     FindSingle2Adapter singleAdapter2;
 
@@ -67,8 +69,9 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
         RxBusHelper.doOnMainThread(this, MyEvent.class, new RxBusHelper.OnEventListener<MyEvent>() {
             @Override
             public void onEvent(MyEvent noteEvent) {
-                if((noteEvent.getType() == MyType.NOTE_NEW)){
-                    reloadNote();
+                if(noteEvent.getType() == MyType.NOTE_NEW){
+                }else if(noteEvent.getType() == MyType.INPUT_UPDATE){
+                    loadInput();
                 }
             }
         });
@@ -87,9 +90,10 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
         //设置Sticky布局
         StickyLayoutHelper stickyLayoutHelper = new StickyLayoutHelper();
         stickyLayoutHelper.setStickyStart(true);
-        mAdapters.add(new FindStickyAdapter(this.getContext(), stickyLayoutHelper, new OnRequestListener() {
+
+        stickyAdapter = new FindStickyAdapter(this.getContext(), stickyLayoutHelper, new OnRequestListener() {
             @Override
-            public void onStart(String url, Types type) {
+            public void onStart(String url, TypesConfig type) {
                 switch (type){
                     case GET:
                         getRequest(url);
@@ -97,21 +101,22 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                     default:break;
                 }
             }
-        }));
+        });
+        mAdapters.add(stickyAdapter);
 
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
-        singleAdapter1 = new FindSingleAdapter(this.getContext(), singleLayoutHelper, 1);
+        singleAdapter1 = new FindSingleAdapter(this.getContext(), singleLayoutHelper);
         mAdapters.add(singleAdapter1);
 
-        singleAdapter2 = new FindSingle2Adapter(this.getContext(), singleLayoutHelper, 1);
+        singleAdapter2 = new FindSingle2Adapter(this.getContext(), singleLayoutHelper);
         mAdapters.add(singleAdapter2);
 
         //设置适配器
         delegateAdapter.setAdapters(mAdapters);
     }
 
-    private void reloadNote(){
-        initView();
+    private void loadInput(){
+        singleAdapter1.loadInputAdapter();
     }
 
     private void getRequest(final String url){
@@ -122,29 +127,30 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                     String responseString = response.get();
                     if (!TextUtils.isEmpty(responseString)) {
                         singleAdapter2.setContent(responseString);
-                        insertData(Types.GET, url, responseString);
+                        insertData(TypesConfig.GET, url, "", responseString);
                     }else {
                         ToastUtils.showToast(mContext, "success: no data");
-                        insertData(Types.GET, url, "success:no data");
+                        insertData(TypesConfig.GET, url, "", "success:no data");
                     }
                 }
 
                 @Override
                 public void onFailed(int what, Response<String> response) {
-                    insertData(Types.GET, url, "faild:"+response.getException());
+                    insertData(TypesConfig.GET, url, "", "faild:"+response.getException());
                 }
             },true,true);
     }
 
-    private void insertData(Types types, String input, String output){
+    private void insertData(TypesConfig types, String url, String input, String output){
         DataHelper helper = DataHelper.getInstance();
         DataEntity entity = new DataEntity();
         long current = System.currentTimeMillis();
         entity.setData_id(current);
         entity.setData_lasttime(TimeUtil.milliseconds2String(current));
         entity.setData_name(types.name());
-        entity.setData_url(input);
-        entity.setData_path(output);
+        entity.setData_url(url);
+        entity.setData_input(input);
+        entity.setData_output(output);
 
         helper.insert(entity);
         RxBusHelper.post(new MyEvent.Builder(MyType.DATE_UPDATE).build());

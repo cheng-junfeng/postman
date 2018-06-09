@@ -42,11 +42,11 @@ public class DataPresenter implements DataContract.Presenter {
         for (int i = 0; (i < allMess.size() && i < (pageIndex+pageSize)); i++) {
             DataEntity oneMess = allMess.get(i);
 
-            DataListBean temp = new DataListBean.Builder(oneMess.getData_id())
-                    .content(oneMess.getData_name())
+            DataListBean temp = new DataListBean.Builder(oneMess.getData_id(), oneMess.getData_name())
+                    .url(oneMess.getData_url())
                     .time(oneMess.getData_lasttime())
-                    .input(oneMess.getData_url())
-                    .output(oneMess.getData_path()).build();
+                    .input(oneMess.getData_input())
+                    .output(oneMess.getData_output()).build();
             allData.add(temp);
         }
         mView.setRecyclerData(allData);
