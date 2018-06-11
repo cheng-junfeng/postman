@@ -27,7 +27,6 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:drawableEnd="@mipmap/ic_arrow_down_gray"
             android:background="@drawable/type_green"
             android:layout_margin="2dp"
             android:textColor="@color/color_white"

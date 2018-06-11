@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/all_item_gray_selector"
     android:orientation="vertical"
+    android:paddingLeft="@dimen/offset_3dp"
+    android:paddingRight="@dimen/offset_3dp"
+    android:paddingBottom="@dimen/offset_3dp"
     android:clickable="true"
     android:layout_margin="@dimen/offset_3dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/base_button_height"
+        android:layout_height="@dimen/base_search_height"
         android:layout_marginTop="@dimen/offset_5dp"
         android:background="@drawable/all_item_gray_selector"
         android:clickable="false">
@@ -33,49 +36,41 @@
 
                 <RadioButton
                     android:id="@+id/rb_head"
-                    android:padding="@dimen/offset_7dp"
+                    android:padding="@dimen/offset_3dp"
                     android:layout_marginLeft="@dimen/offset_5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/green_radio_selector"
                     android:button="@null"
-                    android:textSize="@dimen/text_size_10"
+                    android:textSize="@dimen/text_size"
                     android:checked="true"
                     android:textColor="@color/color_white"
                     android:text="Header" />
 
                 <RadioButton
                     android:id="@+id/rb_body"
-                    android:padding="@dimen/offset_7dp"
+                    android:padding="@dimen/offset_3dp"
                     android:layout_marginLeft="@dimen/offset_5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/green_radio_selector"
                     android:button="@null"
-                    android:textSize="@dimen/text_size_10"
+                    android:textSize="@dimen/text_size"
                     android:checked="false"
                     android:text="Body"
                     android:textColor="@color/color_green" />
             </RadioGroup>
-
-            <ImageView
-                android:id="@+id/rb_add"
-                android:layout_width="@dimen/offset_30dp"
-                android:layout_height="@dimen/offset_30dp"
-                android:padding="@dimen/offset_3dp"
-                android:src="@mipmap/ic_plus"
-                android:background="@drawable/type_black"/>
         </LinearLayout>
     </RelativeLayout>
     <View style="@style/DeepUnderLine" />
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/input_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_height="wrap_content"
         android:background="@color/color_gray">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

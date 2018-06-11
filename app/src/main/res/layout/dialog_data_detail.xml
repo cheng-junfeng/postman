@@ -39,7 +39,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="http://172.16.72.11:8080" />
+                android:layout_marginLeft="@dimen/margin_left"
+                android:layout_marginRight="@dimen/margin_left"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@drawable/type_green"
+                android:textColor="@color/color_white"
+                android:paddingLeft="@dimen/offset_3dp"
+                android:paddingRight="@dimen/offset_3dp"
+                android:gravity="start"
+                android:text="http://172.16.93.16:8080/test" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"

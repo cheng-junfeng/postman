@@ -61,7 +61,7 @@ public class DataDetailActvity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(url);
-                ToastUtils.showToast(getApplicationContext(), "had copied:url");
+                ToastUtils.showToast(getApplicationContext(), "had copied:"+url);
                 return true;
             }
         });
@@ -75,7 +75,7 @@ public class DataDetailActvity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(input);
-                ToastUtils.showToast(getApplicationContext(), "had copied:input");
+                ToastUtils.showToast(getApplicationContext(), "had copied:"+input);
                 return true;
             }
         });
@@ -85,7 +85,7 @@ public class DataDetailActvity extends BaseActivity {
                 ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                 // 将文本内容放到系统剪贴板里。
                 cm.setText(output);
-                ToastUtils.showToast(getApplicationContext(), "had copied:output");
+                ToastUtils.showToast(getApplicationContext(), "had copied:"+output);
                 return true;
             }
         });

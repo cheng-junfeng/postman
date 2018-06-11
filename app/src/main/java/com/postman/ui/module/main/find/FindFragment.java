@@ -14,13 +14,17 @@ import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
 import com.base.app.event.RxBusHelper;
 import com.base.utils.TimeUtil;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.hint.utils.ToastUtils;
 import com.postman.R;
 import com.postman.app.activity.BaseCompatFragment;
 import com.postman.app.event.MyEvent;
 import com.postman.app.event.MyType;
 import com.postman.app.listener.OnRequestListener;
+import com.postman.config.enums.OptionsConfig;
 import com.postman.config.enums.TypesConfig;
+import com.postman.db.cache.PostmanCache;
 import com.postman.db.entity.DataEntity;
 import com.postman.db.helper.DataHelper;
 import com.postman.net.CallServer;
@@ -28,14 +32,17 @@ import com.postman.net.HttpListener;
 import com.postman.ui.module.main.find.adapter.FindSingle2Adapter;
 import com.postman.ui.module.main.find.adapter.FindSingleAdapter;
 import com.postman.ui.module.main.find.adapter.FindStickyAdapter;
+import com.postman.ui.module.main.find.bean.KeyListBean;
 import com.postman.ui.module.main.find.contract.FindFragmentContract;
 import com.postman.ui.module.main.find.presenter.FindFragmentPresenter;
+import com.postman.ui.module.main.find.utils.FindCacheUtil;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.Response;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,6 +63,7 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
     FindSingle2Adapter singleAdapter2;
 
     private Context mContext;
+    private PostmanCache myCache;
 
     @Override
     protected int setContentView() {
@@ -66,11 +74,12 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View containerView = super.onCreateView(inflater, container, savedInstanceState);
         mContext = this.getContext();
+        myCache = PostmanCache.get(mContext);
         RxBusHelper.doOnMainThread(this, MyEvent.class, new RxBusHelper.OnEventListener<MyEvent>() {
             @Override
             public void onEvent(MyEvent noteEvent) {
-                if(noteEvent.getType() == MyType.NOTE_NEW){
-                }else if(noteEvent.getType() == MyType.INPUT_UPDATE){
+                if (noteEvent.getType() == MyType.NOTE_NEW) {
+                } else if (noteEvent.getType() == MyType.INPUT_UPDATE) {
                     loadInput();
                 }
             }
@@ -94,11 +103,15 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
         stickyAdapter = new FindStickyAdapter(this.getContext(), stickyLayoutHelper, new OnRequestListener() {
             @Override
             public void onStart(String url, TypesConfig type) {
-                switch (type){
+                switch (type) {
                     case GET:
                         getRequest(url);
                         break;
-                    default:break;
+                    case POST:
+                        postRequest(url);
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -115,33 +128,102 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
         delegateAdapter.setAdapters(mAdapters);
     }
 
-    private void loadInput(){
+    private void loadInput() {
         singleAdapter1.loadInputAdapter();
+        singleAdapter1.notifyDataSetChanged();
     }
 
-    private void getRequest(final String url){
+    private void getRequest(final String url) {
         Request<String> stringRequest = NoHttp.createStringRequest(url, RequestMethod.GET);
-            CallServer.getInstance().request(this.getActivity(), 1, stringRequest, new HttpListener<String>() {
-                @Override
-                public void onSucceed(int what, Response<String> response) {
-                    String responseString = response.get();
-                    if (!TextUtils.isEmpty(responseString)) {
-                        singleAdapter2.setContent(responseString);
-                        insertData(TypesConfig.GET, url, "", responseString);
-                    }else {
-                        ToastUtils.showToast(mContext, "success: no data");
-                        insertData(TypesConfig.GET, url, "", "success:no data");
-                    }
+        ArrayList<KeyListBean> allHeader = FindCacheUtil.getKeyBean(myCache, OptionsConfig.HEADER);
+        final JsonObject jsonObject = new JsonObject();
+        JsonArray arrayHeader = new JsonArray();
+        for (KeyListBean beans : allHeader) {
+            if (beans.set) {
+                stringRequest.addHeader(beans.key, beans.value);
+                JsonObject obj = new JsonObject();
+                obj.addProperty(beans.key, beans.value);
+                arrayHeader.add(obj);
+            }
+        }
+        jsonObject.add(OptionsConfig.HEADER.name(), arrayHeader);
+        ArrayList<KeyListBean> allBody = FindCacheUtil.getKeyBean(myCache, OptionsConfig.BODY);
+        JsonArray arrayBody = new JsonArray();
+        for (KeyListBean beans : allBody) {
+            if (beans.set) {
+                stringRequest.add(beans.key, beans.value);
+                JsonObject obj = new JsonObject();
+                obj.addProperty(beans.key, beans.value);
+                arrayBody.add(obj);
+            }
+        }
+        jsonObject.add(OptionsConfig.BODY.name(), arrayBody);
+        CallServer.getInstance().request(this.getActivity(), 1, stringRequest, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                String responseString = response.get();
+                if (!TextUtils.isEmpty(responseString)) {
+                    singleAdapter2.setContent(responseString);
+                    insertData(TypesConfig.GET, url, jsonObject.toString(), responseString);
+                } else {
+                    ToastUtils.showToast(mContext, "success: no data");
+                    insertData(TypesConfig.GET, url, jsonObject.toString(), "success:no data");
                 }
+            }
 
-                @Override
-                public void onFailed(int what, Response<String> response) {
-                    insertData(TypesConfig.GET, url, "", "faild:"+response.getException());
-                }
-            },true,true);
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                insertData(TypesConfig.GET, url, jsonObject.toString(), "faild:" + response.getException());
+            }
+        }, true, true);
     }
 
-    private void insertData(TypesConfig types, String url, String input, String output){
+    private void postRequest(final String url) {
+        Request<String> stringRequest = NoHttp.createStringRequest(url, RequestMethod.POST);
+        ArrayList<KeyListBean> allHeader = FindCacheUtil.getKeyBean(myCache, OptionsConfig.HEADER);
+        final JsonObject jsonObject = new JsonObject();
+        JsonArray arrayHeader = new JsonArray();
+        for (KeyListBean beans : allHeader) {
+            if (beans.set) {
+                stringRequest.addHeader(beans.key, beans.value);
+                JsonObject obj = new JsonObject();
+                obj.addProperty(beans.key, beans.value);
+                arrayHeader.add(obj);
+            }
+        }
+        jsonObject.add(OptionsConfig.HEADER.name(), arrayHeader);
+        ArrayList<KeyListBean> allBody = FindCacheUtil.getKeyBean(myCache, OptionsConfig.BODY);
+        JsonArray arrayBody = new JsonArray();
+        for (KeyListBean beans : allBody) {
+            if (beans.set) {
+                stringRequest.add(beans.key, beans.value);
+                JsonObject obj = new JsonObject();
+                obj.addProperty(beans.key, beans.value);
+                arrayBody.add(obj);
+            }
+        }
+        jsonObject.add(OptionsConfig.BODY.name(), arrayBody);
+        CallServer.getInstance().request(this.getActivity(), 1, stringRequest, new HttpListener<String>() {
+            @Override
+            public void onSucceed(int what, Response<String> response) {
+                String responseString = response.get();
+                if (!TextUtils.isEmpty(responseString)) {
+                    singleAdapter2.setContent(responseString);
+                    insertData(TypesConfig.POST, url, jsonObject.toString(), responseString);
+                } else {
+                    ToastUtils.showToast(mContext, "success: no data");
+                    insertData(TypesConfig.POST, url, jsonObject.toString(), "success:no data");
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response) {
+                insertData(TypesConfig.POST, url, jsonObject.toString(), "faild:" + response.getException());
+            }
+        }, true, true);
+    }
+
+    private void insertData(TypesConfig types, String url, String input, String output) {
         DataHelper helper = DataHelper.getInstance();
         DataEntity entity = new DataEntity();
         long current = System.currentTimeMillis();

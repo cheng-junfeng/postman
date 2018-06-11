@@ -23,4 +23,14 @@ public enum OptionsConfig {
         }
         return value;
     }
+
+    public static OptionsConfig value(String name){
+        OptionsConfig value = HEADER;
+        if(HEADER.name().equals(name)){
+            value = HEADER;
+        }else if(BODY.name().equals(name)){
+            value = BODY;
+        }
+        return value;
+    }
 }

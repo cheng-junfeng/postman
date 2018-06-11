@@ -14,12 +14,12 @@ import com.postman.app.activity.BaseActivity;
 import com.postman.app.event.MyEvent;
 import com.postman.app.event.MyType;
 import com.postman.config.Cache;
+import com.postman.config.Extra;
 import com.postman.config.enums.OptionsConfig;
 import com.postman.config.enums.TypesConfig;
 import com.postman.db.cache.PostmanCache;
-import com.postman.db.cache.bean.InputBean;
-
-import java.util.HashMap;
+import com.postman.ui.module.main.find.bean.KeyListBean;
+import com.postman.ui.module.main.find.utils.FindCacheUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,6 +36,7 @@ public class InputAddActvity extends BaseActivity {
     @BindView(R.id.hm_value)
     EditText hmValue;
 
+    int pos = 0;
     String type = TypesConfig.POST.name();
     String option = OptionsConfig.HEADER.name();
     private Context mContext;
@@ -54,12 +55,22 @@ public class InputAddActvity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            pos = bundle.getInt(Extra.DATA_INPUT_POS, 0);
+        }
         mContext = this;
         myCache = PostmanCache.get(mContext);
         type = myCache.getAsString(Cache.CACHE_TYPE);
         option = myCache.getAsString(Cache.CACHE_OPTION);
         hmType.setText(type);
         hmOptions.setText(option);
+
+        KeyListBean myBean = FindCacheUtil.getKeyBean(myCache, OptionsConfig.value(option), pos);
+        if(myBean != null && myBean.set){
+            hmKey.setText(myBean.key);
+            hmValue.setText(myBean.value);
+        }
     }
 
     @OnClick({R.id.btn_cancel, R.id.btn_confirm})
@@ -69,29 +80,23 @@ public class InputAddActvity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_confirm:
-                String key1 = hmKey.getText().toString();
+                String key1 = hmKey.getText().toString().trim();
                 if (TextUtils.isEmpty(key1)) {
                     ToastUtils.showToast(mContext, "key is empty");
+                    return;
                 }
-                String value1 = hmValue.getText().toString();
+                String value1 =  hmValue.getText().toString().trim();
                 if (TextUtils.isEmpty(value1)) {
                     ToastUtils.showToast(mContext, "value is empty");
+                    return;
                 }
 
-                InputBean oldEntity = (InputBean) myCache.getAsObject(option);
-                if (oldEntity == null) {
-                    InputBean newEntity = new InputBean();
-                    newEntity.option = option;
-                    newEntity.keyValue = new HashMap<>();
-                    newEntity.keyValue.put(key1, value1);
-                    myCache.put(option, newEntity);
-                } else {
-                    if (oldEntity.keyValue == null) {
-                        oldEntity.keyValue = new HashMap<>();
-                    }
-                    oldEntity.keyValue.put(key1, value1);
-                    myCache.put(option, oldEntity);
-                }
+                KeyListBean bean = new KeyListBean();
+                bean.set = true;
+                bean.key = key1;
+                bean.value = value1;
+                FindCacheUtil.setKeyBean(myCache, OptionsConfig.value(option), pos, bean);
+
                 RxBusHelper.post(new MyEvent.Builder(MyType.INPUT_UPDATE).build());
                 finish();
                 break;

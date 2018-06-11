@@ -1,6 +1,9 @@
 package com.postman.ui.module.main.find.bean;
 
-public class KeyListBean {
+import java.io.Serializable;
+
+public class KeyListBean implements Serializable {
+    public boolean set = false;
     public String key;
     public String value;
 }

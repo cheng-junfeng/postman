@@ -1,17 +1,21 @@
 package com.postman.ui.module.main.find.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.base.app.adapter.BaseRecyAdapter;
 import com.hint.listener.OnChooseListener;
 import com.postman.R;
+import com.postman.config.Extra;
 import com.postman.ui.module.main.find.bean.KeyListBean;
+import com.postman.ui.module.main.find.view.InputAddActvity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,16 @@ public class KeyListAdapter extends BaseRecyAdapter<KeyListAdapter.ViewHolder> {
         this.data = datas;
     }
 
+//    public void setNewDatas(List<KeyListBean> datas) {
+//        if (datas == null) {
+//            return;
+//        }
+//        this.data.clear();
+//        this.data = new ArrayList<>();
+//        this.data.addAll(datas);
+////        this.data = datas;
+//    }
+
     public void setOnListener(OnChooseListener mOnItemClickListener) {
         this.mOnClickListener = mOnItemClickListener;
     }
@@ -45,16 +59,40 @@ public class KeyListAdapter extends BaseRecyAdapter<KeyListAdapter.ViewHolder> {
     @Override
     public void myBindViewHolder(final ViewHolder holder, final int position) {
         KeyListBean userModel = data.get(position);
-        holder.txKey.setText(userModel.key);
-        holder.txValue.setText(userModel.value);
+        if(userModel.set){
+            holder.hmKey.setText(userModel.key);
+            holder.hmValue.setText(userModel.value);
+        }
         holder.txDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnClickListener != null){
+                holder.hmKey.setText("");
+                holder.hmValue.setText("");
+                if (mOnClickListener != null) {
                     mOnClickListener.onPositive(position);
                 }
             }
         });
+        holder.hmKey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startInputEdit(position);
+            }
+        });
+        holder.hmValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startInputEdit(position);
+            }
+        });
+    }
+
+    private void startInputEdit(int position){
+        Intent intent = new Intent(mContext, InputAddActvity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(Extra.DATA_INPUT_POS, position);
+        intent.putExtras(bundle);
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -87,16 +125,25 @@ public class KeyListAdapter extends BaseRecyAdapter<KeyListAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tx_key)
-        TextView txKey;
-        @BindView(R.id.tx_value)
-        TextView txValue;
+        @BindView(R.id.hm_key)
+        EditText hmKey;
+        @BindView(R.id.hm_value)
+        EditText hmValue;
         @BindView(R.id.tx_delete)
         ImageView txDelete;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            hmKey.setCursorVisible(false);
+            hmKey.setFocusable(false);
+            hmKey.setFocusableInTouchMode(false);
+
+//            hmValue.setCursorVisible(false);
+//            hmValue.setFocusable(false);
+//            hmValue.setFocusableInTouchMode(false);
+            hmValue.setFocusable(false);
+            hmValue.setFocusableInTouchMode(false);
         }
     }
 }

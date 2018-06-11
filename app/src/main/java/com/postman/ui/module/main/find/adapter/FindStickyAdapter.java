@@ -27,6 +27,7 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
     private Context context;
     private LayoutHelper layoutHelper;
     private OnRequestListener onRequestListener;
+    private PostmanCache cache;
 
     private int typeIndex = 0;
 
@@ -34,6 +35,8 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
         this.context = context;
         this.layoutHelper = layoutHelper;
         this.onRequestListener = listener;
+        cache = PostmanCache.get(context);
+        cache.put(Cache.CACHE_TYPE, TypesConfig.value(0).name());
     }
 
     @Override
@@ -59,7 +62,6 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
                             public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                                 typeIndex=which;
                                 holder.tvType.setText(TypesConfig.value(typeIndex).name());
-                                PostmanCache cache = PostmanCache.get(context);
                                 cache.put(Cache.CACHE_TYPE, TypesConfig.value(typeIndex).name());
                                 return true;
                             }

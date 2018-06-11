@@ -14,4 +14,6 @@ public interface Constant {
         int typeFooter = 9;         //底部
         int typeGvSecond = 10;      //九宫格
     }
+
+    int INPUT_SIZE = 5;
 }
