@@ -1,29 +1,19 @@
 package com.postman.ui.module.main.find.presenter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.VirtualLayoutManager;
-import com.alibaba.android.vlayout.layout.GridLayoutHelper;
 import com.alibaba.android.vlayout.layout.LinearLayoutHelper;
-import com.postman.R;
-import com.postman.app.adapter.BaseDelegateAdapter;
-import com.postman.app.adapter.BaseViewHolder;
-import com.postman.config.Constant;
 import com.postman.db.entity.NoteEntity;
 import com.postman.db.helper.NoteHelper;
 import com.postman.ui.module.main.find.adapter.FindLinearAdapter;
 import com.postman.ui.module.main.find.contract.FindFragmentContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

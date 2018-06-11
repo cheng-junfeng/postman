@@ -21,6 +21,15 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <!-- GPS -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <application
         android:name=".PostmanApplication"
         android:allowBackup="true"
@@ -48,6 +57,10 @@
         </activity>
 
         <activity android:name=".ui.module.other.scan.ScanActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.module.other.ping.PingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.module.other.near.NearActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.module.main.data.view.DataDetailActvity"
             android:screenOrientation="portrait"

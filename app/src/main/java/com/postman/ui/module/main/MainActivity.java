@@ -1,12 +1,21 @@
 package com.postman.ui.module.main;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.hint.listener.OnChooseListener;
+import com.hint.utils.HintListAdapter;
 import com.postman.R;
 import com.postman.app.activity.BaseCompatActivity;
 import com.postman.ui.module.main.data.DataFragment;
@@ -14,10 +23,15 @@ import com.postman.ui.module.main.find.FindFragment;
 import com.postman.ui.module.main.main.adapter.ViewPagerAdapter;
 import com.postman.ui.module.main.main.contract.MainContract;
 import com.postman.ui.module.main.main.presenter.MainPresenter;
+import com.postman.ui.module.other.near.NearActivity;
+import com.postman.ui.module.other.ping.PingActivity;
 import com.postman.ui.module.other.scan.ScanActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.base.utils.ToolbarUtil;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +54,7 @@ public class MainActivity extends BaseCompatActivity implements MainContract.Vie
 
     int pre_index = -1;
     MainPresenter mainPresenter;
+    private Context mContext;
 
     @Override
     protected int setContentView() {
@@ -61,6 +76,7 @@ public class MainActivity extends BaseCompatActivity implements MainContract.Vie
         super.onCreate(savedInstanceState);
         normalColor = getResources().getColor(R.color.tab_host_text_normal);
         selectColor = getResources().getColor(R.color.tab_host_text_select);
+        mContext = this;
 
         initData();
         initToolbar();
@@ -74,13 +90,51 @@ public class MainActivity extends BaseCompatActivity implements MainContract.Vie
     }
 
     private void initToolbar() {
-        ToolbarUtil.setToolbarLeft(toolbar, "Home", getString(R.string.app_name), null);
+        ToolbarUtil.setToolbarLeft(toolbar, "Home", getString(R.string.app_name), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupWindow();
+            }
+        });
         ToolbarUtil.setToolbarRight(toolbar, R.mipmap.ic_action_scan, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 readGo(ScanActivity.class);
             }
         });
+    }
+
+    PopupWindow typePopupWindow;
+    private void showPopupWindow() {
+        if (typePopupWindow == null) {
+            View view = LayoutInflater.from(this).inflate(R.layout.dialog_choose, null);
+            ListView mainView = view.findViewById(com.hint.R.id.main_view);
+            List<String> allStr = new ArrayList<>();
+            allStr.add("Ping");
+            HintListAdapter mAdapter = new HintListAdapter(mContext, allStr);
+            mAdapter.setOnListener(new OnChooseListener() {
+                @Override
+                public void onPositive(int pos) {
+                    typePopupWindow.dismiss();
+                    switch (pos){
+                        case 0:
+                            readGo(PingActivity.class);
+                            break;
+//                        case 1:
+//                            readGo(NearActivity.class);
+//                            break;
+                        default:break;
+                    }
+                }
+            });
+            mainView.setAdapter(mAdapter);
+            typePopupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            typePopupWindow.setOutsideTouchable(true);
+            typePopupWindow.setFocusable(true);
+            typePopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        typePopupWindow.showAsDropDown(toolbar);
     }
 
     FindFragment findFragment;

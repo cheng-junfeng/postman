@@ -42,16 +42,6 @@ public class KeyListAdapter extends BaseRecyAdapter<KeyListAdapter.ViewHolder> {
         this.data = datas;
     }
 
-//    public void setNewDatas(List<KeyListBean> datas) {
-//        if (datas == null) {
-//            return;
-//        }
-//        this.data.clear();
-//        this.data = new ArrayList<>();
-//        this.data.addAll(datas);
-////        this.data = datas;
-//    }
-
     public void setOnListener(OnChooseListener mOnItemClickListener) {
         this.mOnClickListener = mOnItemClickListener;
     }

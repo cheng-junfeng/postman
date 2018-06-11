@@ -13,7 +13,7 @@ import com.hint.listener.OnChooseListener;
 
 import java.util.List;
 
-class HintListAdapter extends BaseAdapter {
+public class HintListAdapter extends BaseAdapter {
     private List<String> layers;
     private Context context;
     OnChooseListener mOnClickListener;
