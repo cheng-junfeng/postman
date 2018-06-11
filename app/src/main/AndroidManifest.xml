@@ -68,6 +68,12 @@
         <activity android:name=".ui.module.main.find.view.InputAddActvity"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog"/>
+        <activity android:name=".ui.module.other.download.DownloadActvity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog"/>
+        <activity android:name=".ui.module.other.download.UploadActvity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog"/>
     </application>
 
 </manifest>

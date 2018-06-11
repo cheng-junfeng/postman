@@ -1,6 +1,7 @@
 package com.postman.net;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 
@@ -20,7 +21,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 public class HttpResponseListener<T> implements OnResponseListener<T> {
     private final static String TAG = "HttpResponseListener";
 
-    private Activity mActivity;
+    private Context mActivity;
     /**
      * Dialog.
      */
@@ -41,13 +42,13 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      * @param canCancel    是否允许用户取消请求.
      * @param isLoading    是否显示dialog.
      */
-    public HttpResponseListener(Activity activity, Request<?> request, HttpListener<T> httpCallback, boolean
+    public HttpResponseListener(Context activity, Request<?> request, HttpListener<T> httpCallback, boolean
             canCancel, boolean isLoading) {
         this(activity, request, httpCallback, canCancel, isLoading,null);
 
     }
 
-    public HttpResponseListener(Activity activity, Request<?> request, HttpListener<T> httpCallback, boolean
+    public HttpResponseListener(Context activity, Request<?> request, HttpListener<T> httpCallback, boolean
             canCancel, boolean isLoading, String dialogTitle){
         this.mActivity = activity;
         this.mRequest = request;
@@ -76,7 +77,7 @@ public class HttpResponseListener<T> implements OnResponseListener<T> {
      */
     @Override
     public void onStart(int what) {
-        if (mWaitDialog != null && !mActivity.isFinishing() && !mWaitDialog.isShowing())
+        if (mWaitDialog != null && !mWaitDialog.isShowing())
             mWaitDialog.show();
     }
 

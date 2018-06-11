@@ -51,6 +51,8 @@ public class FindStickyAdapter extends DelegateAdapter.Adapter<FindStickyAdapter
 
     @Override
     public void onBindViewHolder(final FindStickyHolder holder, int position) {
+        String tempUrl = cache.getAsString(Cache.CACHE_URL);
+        holder.search_bar.setText(tempUrl);
         holder.tvType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

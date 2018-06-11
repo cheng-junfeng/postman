@@ -1,6 +1,6 @@
 package com.postman.net;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.download.DownloadListener;
@@ -35,12 +35,12 @@ public class CallServer {
         mRequestQueue.add(what, request, listener);
     }
 
-    public <T> void request(Activity activity, int what, Request<T> request, HttpListener<T> callback,
+    public <T> void request(Context activity, int what, Request<T> request, HttpListener<T> callback,
                             boolean canCancel, boolean isLoading) {
         mRequestQueue.add(what, request, new HttpResponseListener<>(activity, request, callback, canCancel, isLoading));
     }
 
-    public <T> void request(Activity activity, int what, Request<T> request, HttpListener<T> callback,
+    public <T> void request(Context activity, int what, Request<T> request, HttpListener<T> callback,
                             boolean canCancel, boolean isLoading, String dialogTitle) {
         mRequestQueue.add(what, request, new HttpResponseListener<>(activity, request, callback, canCancel, isLoading,dialogTitle));
     }

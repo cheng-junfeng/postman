@@ -7,18 +7,17 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.hint.listener.OnChooseListener;
 import com.hint.utils.DialogUtils;
 import com.hint.utils.ToastUtils;
-import com.base.utils.DensityUtils;
 import com.base.utils.ToolbarUtil;
 import com.postman.R;
 import com.postman.app.activity.BaseCompatActivity;
+import com.postman.config.Cache;
+import com.postman.db.cache.PostmanCache;
+import com.postman.ui.module.main.MainActivity;
 import com.webview.ui.WebViewNormalActivity;
 import com.webview.config.WebConfig;
 import com.zxing.control.decode.DecodeType;
@@ -39,7 +38,6 @@ public class ScanActivity extends BaseCompatActivity {
     @BindView(R.id.zxingView)
     ZxingView zxingView;
 
-    private View tv_scan_hint;
     private Context mContext;
 
     @Override
@@ -111,7 +109,7 @@ public class ScanActivity extends BaseCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         long[] pattern = {100, 400, 100, 400};
         vibrator.vibrate(pattern, 1);
-        tv_scan_hint.postDelayed(new Runnable() {
+        zxingView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 vibrator.cancel();
@@ -119,6 +117,7 @@ public class ScanActivity extends BaseCompatActivity {
         }, 1000);
 
         List<String> allStr = new ArrayList<String>();
+        allStr.add("As url");
         allStr.add("Copy to the plate");
         allStr.add("Open webview");
         allStr.add("Share");
@@ -127,18 +126,23 @@ public class ScanActivity extends BaseCompatActivity {
             public void onPositive(int pos) {
                 switch (pos){
                     case 0:{
+                        PostmanCache cache = PostmanCache.get(mContext);
+                        cache.put(Cache.CACHE_URL, barcodes);
+                        readGo(MainActivity.class);
+                    }break;
+                    case 1:{
                         ClipboardManager cm = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
                         // 将文本内容放到系统剪贴板里。
                         cm.setText(barcodes);
                         ToastUtils.showToast(getApplicationContext(), "had copied");
                         restartPreviewAfterDelay(1000);
                     }break;
-                    case 1:{
+                    case 2:{
                         Bundle bundle = new Bundle();
                         bundle.putString(WebConfig.JS_URL, barcodes);
                         readGo(WebViewNormalActivity.class, bundle);
                     }break;
-                    case 2:{
+                    case 3:{
                         Intent textIntent = new Intent(Intent.ACTION_SEND);
                         textIntent.setType("text/plain");
                         textIntent.putExtra(Intent.EXTRA_TEXT, barcodes);

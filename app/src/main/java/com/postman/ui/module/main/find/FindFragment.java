@@ -13,7 +13,6 @@ import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.alibaba.android.vlayout.layout.StickyLayoutHelper;
 import com.base.app.event.RxBusHelper;
-import com.base.utils.TimeUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hint.utils.ToastUtils;
@@ -22,11 +21,10 @@ import com.postman.app.activity.BaseCompatFragment;
 import com.postman.app.event.MyEvent;
 import com.postman.app.event.MyType;
 import com.postman.app.listener.OnRequestListener;
+import com.postman.config.Extra;
 import com.postman.config.enums.OptionsConfig;
 import com.postman.config.enums.TypesConfig;
 import com.postman.db.cache.PostmanCache;
-import com.postman.db.entity.DataEntity;
-import com.postman.db.helper.DataHelper;
 import com.postman.net.CallServer;
 import com.postman.net.HttpListener;
 import com.postman.ui.module.main.find.adapter.FindSingle2Adapter;
@@ -36,6 +34,9 @@ import com.postman.ui.module.main.find.bean.KeyListBean;
 import com.postman.ui.module.main.find.contract.FindFragmentContract;
 import com.postman.ui.module.main.find.presenter.FindFragmentPresenter;
 import com.postman.ui.module.main.find.utils.FindCacheUtil;
+import com.postman.ui.module.main.find.utils.FindDBUtil;
+import com.postman.ui.module.other.download.DownloadActvity;
+import com.postman.ui.module.other.download.UploadActvity;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.Request;
@@ -110,6 +111,12 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                     case POST:
                         postRequest(url);
                         break;
+                    case DOWN:
+                        downloadRequest(url);
+                        break;
+                    case UPLOAD:
+                        uploadRequest(url);
+                        break;
                     default:
                         break;
                 }
@@ -164,16 +171,16 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                 String responseString = response.get();
                 if (!TextUtils.isEmpty(responseString)) {
                     singleAdapter2.setContent(responseString);
-                    insertData(TypesConfig.GET, url, jsonObject.toString(), responseString);
+                    FindDBUtil.insertData(TypesConfig.GET, url, jsonObject.toString(), responseString);
                 } else {
                     ToastUtils.showToast(mContext, "success: no data");
-                    insertData(TypesConfig.GET, url, jsonObject.toString(), "success:no data");
+                    FindDBUtil.insertData(TypesConfig.GET, url, jsonObject.toString(), "success:no data");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                insertData(TypesConfig.GET, url, jsonObject.toString(), "faild:" + response.getException());
+                FindDBUtil.insertData(TypesConfig.GET, url, jsonObject.toString(), "faild:" + response.getException());
             }
         }, true, true);
     }
@@ -209,32 +216,29 @@ public class FindFragment extends BaseCompatFragment implements FindFragmentCont
                 String responseString = response.get();
                 if (!TextUtils.isEmpty(responseString)) {
                     singleAdapter2.setContent(responseString);
-                    insertData(TypesConfig.POST, url, jsonObject.toString(), responseString);
+                    FindDBUtil.insertData(TypesConfig.POST, url, jsonObject.toString(), responseString);
                 } else {
                     ToastUtils.showToast(mContext, "success: no data");
-                    insertData(TypesConfig.POST, url, jsonObject.toString(), "success:no data");
+                    FindDBUtil.insertData(TypesConfig.POST, url, jsonObject.toString(), "success:no data");
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                insertData(TypesConfig.POST, url, jsonObject.toString(), "faild:" + response.getException());
+                FindDBUtil.insertData(TypesConfig.POST, url, jsonObject.toString(), "faild:" + response.getException());
             }
         }, true, true);
     }
 
-    private void insertData(TypesConfig types, String url, String input, String output) {
-        DataHelper helper = DataHelper.getInstance();
-        DataEntity entity = new DataEntity();
-        long current = System.currentTimeMillis();
-        entity.setData_id(current);
-        entity.setData_lasttime(TimeUtil.milliseconds2String(current));
-        entity.setData_name(types.name());
-        entity.setData_url(url);
-        entity.setData_input(input);
-        entity.setData_output(output);
+    private void downloadRequest(final String url) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Extra.DATA_URL, url);
+        readGo(DownloadActvity.class, bundle);
+    }
 
-        helper.insert(entity);
-        RxBusHelper.post(new MyEvent.Builder(MyType.DATE_UPDATE).build());
+    private void uploadRequest(final String url) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Extra.DATA_URL, url);
+        readGo(UploadActvity.class, bundle);
     }
 }
