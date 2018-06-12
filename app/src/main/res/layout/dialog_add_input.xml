@@ -130,7 +130,8 @@
                 android:padding="@dimen/offset_7dp"
                 android:textSize="@dimen/text_size_large"
                 android:background="@color/color_light_white"
-                android:text="取消" />
+                android:textAllCaps="false"
+                android:text="Cancel" />
 
             <Button
                 android:id="@+id/btn_confirm"
@@ -141,7 +142,8 @@
                 android:textSize="@dimen/text_size_large"
                 android:padding="@dimen/offset_7dp"
                 android:background="@color/base_default"
-                android:text="确定" />
+                android:textAllCaps="false"
+                android:text="Sure" />
 
         </LinearLayout>
     </LinearLayout>

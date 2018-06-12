@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.postman">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -74,6 +75,27 @@
         <activity android:name=".ui.module.other.download.UploadActvity"
             android:screenOrientation="portrait"
             android:theme="@style/Dialog"/>
-    </application>
+        <activity android:name=".ui.module.other.upgrade.UpgradeActvity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Dialog"/>
 
+        <!--bugly必须配置-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:theme="@android:style/Theme.Translucent"/>
+
+        <!-- 必须配置 fileProvider， 注意： android:authorities="${applicationId}.fileProvider" 不要直接copy，设置为你的包名.fileProvider-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${APP_ID}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource"/>
+        </provider>
+    </application>
 </manifest>
