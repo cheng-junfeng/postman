@@ -10,6 +10,7 @@ import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.webview.R;
 import com.webview.R2;
 import com.webview.app.activity.WebBaseCompatActivity;
+import com.webview.app.control.MyChromeWebClient;
 import com.webview.app.control.MyWebViewClient;
 import com.webview.config.WebConfig;
 import com.webview.ui.presenter.WebViewPresenter;
@@ -86,6 +87,7 @@ public class WebViewNormalActivity extends WebBaseCompatActivity {
                 }
             }
         });
+        webView.setWebChromeClient(new MyChromeWebClient());
 
         // 添加Loading
         showLoading();
